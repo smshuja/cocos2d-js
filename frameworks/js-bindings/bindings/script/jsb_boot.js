@@ -543,14 +543,14 @@ cc.loader = {
     }
     
 };
-cc.defineGetterSetter(cc.loader, "", function(){
+cc.defineGetterSetter(cc.loader, "resPath", function(){
     return this._resPath;
 }, function(resPath){
-    this._resPath = resPath || "resPath";
+    this._resPath = resPath || "";
     cc.FileUtils.getInstance().setSearchPath(this._resPath);
 });
 cc.defineGetterSetter(cc.loader, "audioPath", function(){
-    return this._resPath;
+    return this._audioPath;
 }, function(audioPath){
     this._audioPath = audioPath || "";
     cc.FileUtils.getInstance().setSearchPath(this._audioPath);
@@ -958,27 +958,14 @@ cc.game = {
     },
     /**
      * Run game.
-     * @private
-     */
-    _runMainLoop : function(){
-        var self = this, config = self.config, CONFIG_KEY = self.CONFIG_KEY,
-        frameRate = config[CONFIG_KEY.frameRate], director = cc.director;
-        director.setDisplayStats(config[CONFIG_KEY.showFPS]);
-        director.mainLoop();
-        self._paused = false;
-    },
-    /**
-     * Run game.
      */
     run : function(){
         var self = this;
         if(!self._prepareCalled){
             self.prepare(function(){
-                self._runMainLoop();
                 self.onStart();
             });
         }else{
-            self._runMainLoop();
             self.onStart();
         }
     },
