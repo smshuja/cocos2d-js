@@ -1,7 +1,7 @@
 /****************************************************************************
- Copyright (c) 2010-2012 cocos2d-x.org
  Copyright (c) 2008-2010 Ricardo Quesada
- Copyright (c) 2011      Zynga Inc.
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -29,6 +29,9 @@ var audioEngine = cc.audioEngine;
 var MUSIC_FILE = "res/Sound/background.mp3";
 var EFFECT_FILE = "res/Sound/effect2.mp3";
 
+var _DenshionTests = [
+    'Music Test'
+];
 var DenshionTests = [
     {
         title:"Play Music",
@@ -180,7 +183,8 @@ var CocosDenshionTest = cc.LayerGradient.extend({
              cc.eventManager.addListener({
                 event: cc.EventListener.MOUSE,
                  onMouseMove: function(event){
-                     event.getCurrentTarget().moveMenu(event.getDelta());
+                     if(event.getButton() != undefined)
+                        event.getCurrentTarget().moveMenu(event.getDelta());
                  }
              }, this);
 
@@ -214,6 +218,7 @@ var CocosDenshionTest = cc.LayerGradient.extend({
 
 var CocosDenshionTestScene = TestScene.extend({
     runThisTest:function () {
+
         audioEngine = cc.audioEngine;
         var layer = new CocosDenshionTest();
         this.addChild(layer);

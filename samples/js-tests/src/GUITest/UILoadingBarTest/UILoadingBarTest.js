@@ -1,5 +1,6 @@
 /****************************************************************************
- Copyright (c) 2013 cocos2d-x.org
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -33,8 +34,8 @@ var UILoadingBarTest = UIScene.extend({
         if (this._super()) {
             var widgetSize = this._widget.getSize();
             //init text
-            this._topDisplayLabel.setText("");
-            this._bottomDisplayLabel.setText("LoadingBar");
+            this._topDisplayLabel.setString("");
+            this._bottomDisplayLabel.setString("LoadingBar");
 
             this.createLoadingBar();
 
@@ -105,8 +106,8 @@ var UILoadingBarTest_Left_Scale9 = UILoadingBarTest.extend({
         var widgetSize = this._widget.getSize();
         var loadingBar = ccui.LoadingBar.create();
         loadingBar.setName("LoadingBar");
-        loadingBar.loadTexture("res/cocosui/slider_bar_active_9patch.png");
         loadingBar.setScale9Enabled(true);
+        loadingBar.loadTexture("res/cocosui/slider_bar_active_9patch.png");
         loadingBar.setCapInsets(cc.rect(0, 0, 0, 0));
         loadingBar.setSize(cc.size(300, 30));
         loadingBar.setPercent(0);
@@ -122,8 +123,8 @@ var UILoadingBarTest_Right_Scale9 = UILoadingBarTest.extend({
         var widgetSize = this._widget.getSize();
         var loadingBar = ccui.LoadingBar.create();
         loadingBar.setName("LoadingBar");
-        loadingBar.loadTexture("res/cocosui/slider_bar_active_9patch.png");
         loadingBar.setScale9Enabled(true);
+        loadingBar.loadTexture("res/cocosui/slider_bar_active_9patch.png");
         loadingBar.setCapInsets(cc.rect(0, 0, 0, 0));
         loadingBar.setSize(cc.size(300, 30));
         loadingBar.setDirection(ccui.LoadingBar.TYPE_RIGHT);

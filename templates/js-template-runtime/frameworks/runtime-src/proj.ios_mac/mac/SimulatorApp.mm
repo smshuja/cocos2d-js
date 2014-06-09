@@ -35,6 +35,7 @@
 #include "glfw3.h"
 #include "glfw3native.h"
 #include "Runtime.h"
+#include "ConfigParser.h"
 
 #include "cocos2d.h"
 
@@ -42,7 +43,9 @@ using namespace cocos2d;
 
 bool g_landscape=false;
 cocos2d::Size g_screenSize;
-GLView* g_eglView=NULL;
+GLView* g_eglView = nullptr;
+
+static AppController* g_nsAppDelegate=nullptr;
 
 using namespace std;
 using namespace cocos2d;
@@ -50,6 +53,10 @@ using namespace cocos2d;
 @implementation AppController
 
 @synthesize menu;
+std::string getCurAppPath(void)
+{
+    return [[[NSBundle mainBundle] bundlePath] UTF8String];
+}
 
 -(void) dealloc
 {
@@ -62,8 +69,17 @@ using namespace cocos2d;
 
 - (void) applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    NSArray *args = [[NSProcessInfo processInfo] arguments];
+
+    if (args!=nullptr && [args count]>=2) {
+        extern std::string g_resourcePath;
+        g_resourcePath = [[args objectAtIndex:1]UTF8String];
+        if (g_resourcePath.at(0) != '/') {
+            g_resourcePath="";
+        }
+    }
+    g_nsAppDelegate =self;
     AppDelegate app;
-	[self createSimulator:[NSString stringWithUTF8String:"HelloJavascript"] viewWidth:960 viewHeight:640 factor:1.0];
     Application::getInstance()->run();
     
     // After run, application needs to be terminated immediately.
@@ -77,20 +93,20 @@ using namespace cocos2d;
 - (void) createSimulator:(NSString*)viewName viewWidth:(float)width viewHeight:(float)height factor:(float)frameZoomFactor
 {
     if (g_eglView)
-	{
-		return;
-	}
+    {
+        return;
+    }
     
-	g_eglView = GLView::createWithRect([viewName cStringUsingEncoding:NSUTF8StringEncoding],cocos2d::Rect(0.0f,0.0f,width,height),frameZoomFactor);
-	auto director = Director::getInstance();
-	director->setOpenGLView(g_eglView);
-	g_landscape = false;
-	g_screenSize.width = width;
-	g_screenSize.height = height;
-	if (width  > height)
-	{
-		g_landscape = true;
-	}
+    if(!g_landscape)
+    {
+        float tmpvalue =width;
+        width = height;
+        height = tmpvalue;
+    }
+    
+    g_eglView = GLView::createWithRect([viewName cStringUsingEncoding:NSUTF8StringEncoding],cocos2d::Rect(0.0f,0.0f,width,height),frameZoomFactor);
+    auto director = Director::getInstance();
+    director->setOpenGLView(g_eglView);
 
     window = glfwGetCocoaWindow(g_eglView->getWindow());
     [NSApp setDelegate: self];
@@ -103,15 +119,33 @@ using namespace cocos2d;
     [window makeKeyAndOrderFront:self];
 }
 
+void createSimulator(const char* viewName, float width, float height,bool isLandscape,float frameZoomFactor)
+{
+    if(g_nsAppDelegate)
+    {
+        g_landscape = isLandscape;
+        if(height > width)
+        {
+            float tmpvalue =width;
+            width = height;
+            height = tmpvalue;
+        }
+        g_screenSize.width = width;
+        g_screenSize.height = height;
+        
+        [g_nsAppDelegate createSimulator:[NSString stringWithUTF8String:viewName] viewWidth:width viewHeight:height factor:frameZoomFactor];
+    }
+    
+}
 
 - (void) createViewMenu
 {
     
     NSMenu *submenu = [[[window menu] itemWithTitle:@"View"] submenu];
 
-    for (int i = SimulatorConfig::getInstance()->getScreenSizeCount() - 1; i >= 0; --i)
+    for (int i = ConfigParser::getInstance()->getScreenSizeCount() - 1; i >= 0; --i)
     {
-        SimulatorScreenSize size = SimulatorConfig::getInstance()->getScreenSize(i);
+        SimulatorScreenSize size = ConfigParser::getInstance()->getScreenSize(i);
         NSMenuItem *item = [[[NSMenuItem alloc] initWithTitle:[NSString stringWithCString:size.title.c_str() encoding:NSUTF8StringEncoding]
                                                        action:@selector(onViewChangeFrameSize:)
                                                 keyEquivalent:@""] autorelease];
@@ -138,7 +172,7 @@ using namespace cocos2d;
         [itemLandscape setState:NSOffState];
     }
 
-    int scale = 100;
+    int scale = g_eglView->getFrameZoomFactor()*100;
 
     NSMenuItem *itemZoom100 = [menuScreen itemWithTitle:@"Actual (100%)"];
     NSMenuItem *itemZoom75 = [menuScreen itemWithTitle:@"Zoom Out (75%)"];
@@ -166,26 +200,26 @@ using namespace cocos2d;
     }
 
     int width = g_screenSize.width;
-	int height = g_screenSize.height;
-	if (height > width)
-	{
-		int w = width;
-		width = height;
-		height = w;
-	}
+    int height = g_screenSize.height;
+    if (height > width)
+    {
+        int w = width;
+        width = height;
+        height = w;
+    }
     
-	int count = SimulatorConfig::getInstance()->getScreenSizeCount();
-	for (int i = 0; i < count; ++i)
-	{
-		bool bSel = false;
-        SimulatorScreenSize size = SimulatorConfig::getInstance()->getScreenSize(i);
-		if (size.width == width && size.height == height)
-		{
-			bSel = true;
-		}
+    int count = ConfigParser::getInstance()->getScreenSizeCount();
+    for (int i = 0; i < count; ++i)
+    {
+        bool bSel = false;
+        SimulatorScreenSize size = ConfigParser::getInstance()->getScreenSize(i);
+        if (size.width == width && size.height == height)
+        {
+            bSel = true;
+        }
         NSMenuItem *itemView = [menuScreen itemWithTitle:[NSString stringWithUTF8String:size.title.c_str()]];
         [itemView setState:(bSel? NSOnState : NSOffState)];
-	}
+    }
 }
 
 
@@ -194,14 +228,14 @@ using namespace cocos2d;
     auto policy = g_eglView->getResolutionPolicy();
     auto designSize = g_eglView->getDesignResolutionSize();
     
-	if (g_landscape)
-	{
+    if (g_landscape)
+    {
         g_eglView->setFrameSize(g_screenSize.width, g_screenSize.height);
-	}
-	else
-	{
+    }
+    else
+    {
         g_eglView->setFrameSize(g_screenSize.height, g_screenSize.width);
-	}
+    }
     
     g_eglView->setDesignResolutionSize(designSize.width, designSize.height, policy);
     
@@ -243,22 +277,39 @@ using namespace cocos2d;
     [self updateView];
 }
 
-- (IBAction) onReloadScript:(id)sender
+- (void) launch:(NSArray*)args
 {
-    reloadScript("");
+    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
+    NSMutableDictionary *configuration = [NSMutableDictionary dictionaryWithObject:args forKey:NSWorkspaceLaunchConfigurationArguments];
+    NSError *error = [[[NSError alloc] init] autorelease];
+    [[NSWorkspace sharedWorkspace] launchApplicationAtURL:url
+                                                  options:NSWorkspaceLaunchNewInstance
+                                            configuration:configuration error:&error];
+}
+
+- (void) relaunch:(NSArray*)args
+{
+    [self launch:args];
+    [[NSApplication sharedApplication] terminate:self];
+}
+
+- (IBAction) onRelaunch:(id)sender
+{
+    NSArray* args=[[NSArray alloc] initWithObjects:@" ", nil];
+    [self relaunch:args];
 }
 
 
 - (IBAction) onViewChangeFrameSize:(id)sender
 {
     NSInteger index = [sender tag];
-	if (index >= 0 && index < SimulatorConfig::getInstance()->getScreenSizeCount())
-	{
-        SimulatorScreenSize size = SimulatorConfig::getInstance()->getScreenSize(index);
-		g_screenSize.width = size.width;
-		g_screenSize.height = size.height;
-		[self updateView];
-	}
+    if (index >= 0 && index < ConfigParser::getInstance()->getScreenSizeCount())
+    {
+        SimulatorScreenSize size = ConfigParser::getInstance()->getScreenSize(index);
+        g_screenSize.width = size.width;
+        g_screenSize.height = size.height;
+        [self updateView];
+    }
 }
 
 
@@ -267,6 +318,7 @@ using namespace cocos2d;
     if ([sender state] == NSOnState) return;
     float scale = (float)[sender tag] / 100.0f;
     g_eglView->setFrameZoomFactor(scale);
+    [self updateView];
 }
 
 

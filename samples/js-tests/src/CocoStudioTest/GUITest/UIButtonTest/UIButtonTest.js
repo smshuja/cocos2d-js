@@ -1,5 +1,7 @@
 /****************************************************************************
- Copyright (c) 2013 cocos2d-x.org
+ Copyright (c) 2008-2010 Ricardo Quesada
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -43,20 +45,20 @@ var UIButtonEditorTest = UIBaseLayer.extend({
 
     touchEvent: function (sender, type) {
         switch (type) {
-            case ccui.Widget.TOUCH_BAGAN:
-                this._topDisplayText.setText("Touch Down");
+            case ccui.Widget.TOUCH_BEGAN:
+                this._topDisplayText.setString("Touch Down");
                 break;
 
             case ccui.Widget.TOUCH_MOVED:
-                this._topDisplayText.setText("Touch Move");
+                this._topDisplayText.setString("Touch Move");
                 break;
 
             case ccui.Widget.TOUCH_ENDED:
-                this._topDisplayText.setText("Touch Up");
+                this._topDisplayText.setString("Touch Up");
                 break;
 
             case ccui.Widget.TOUCH_CANCELED:
-                this._topDisplayText.setText("Touch Cancelled");
+                this._topDisplayText.setString("Touch Cancelled");
                 break;
 
             default:

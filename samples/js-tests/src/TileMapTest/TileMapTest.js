@@ -1,7 +1,7 @@
 /****************************************************************************
- Copyright (c) 2010-2012 cocos2d-x.org
  Copyright (c) 2008-2010 Ricardo Quesada
- Copyright (c) 2011      Zynga Inc.
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -30,7 +30,7 @@ var tileTestSceneIdx = -1;
 // TileDemo
 //
 //------------------------------------------------------------------
-var TileDemo = BaseTestLayer.extend({
+var TileDemoProps = {
     ctor:function () {
         this._super();
 
@@ -42,17 +42,19 @@ var TileDemo = BaseTestLayer.extend({
                     var delta = touch.getDelta();
             
                     var node = event.getCurrentTarget().getChildByTag(TAG_TILE_MAP);
-            	    node.x += delta.x;
-            	    node.y += delta.y;
+                    node.x += delta.x;
+                    node.y += delta.y;
                 }
             }, this);
         } else if ('mouse' in cc.sys.capabilities)
             cc.eventManager.addListener({
                 event: cc.EventListener.MOUSE,
                 onMouseMove: function(event){
-                    var node = event.getCurrentTarget().getChildByTag(TAG_TILE_MAP);
-                    node.x += event.getDeltaX();
-                    node.y += event.getDeltaY();
+                    if(event.getButton() != undefined){
+                        var node = event.getCurrentTarget().getChildByTag(TAG_TILE_MAP);
+                        node.x += event.getDeltaX();
+                        node.y += event.getDeltaY();
+                    }
                 }
             }, this);
     },
@@ -86,7 +88,13 @@ var TileDemo = BaseTestLayer.extend({
     getTestNumber:function () {
         return tileTestSceneIdx;
     }
-});
+};
+var TileDemo = BaseTestLayer.extend(TileDemoProps);
+
+/******************for vertexz bug**************/
+var FixBugBaseTest = cc.Layer.extend(BaseTestLayerProps);
+var TMXFixBugLayer = FixBugBaseTest.extend(TileDemoProps);
+/***********************************************************/
 
 var TileMapTest = TileDemo.extend({
     ctor:function () {
@@ -109,7 +117,7 @@ var TileMapTest = TileDemo.extend({
 
         var seq = cc.Sequence.create(scale, scaleBack);
 
-        map.runAction(cc.RepeatForever.create(seq));
+        map.runAction(seq.repeatForever());
     },
     title:function () {
         return "TileMapAtlas";
@@ -218,11 +226,11 @@ var TMXOrthoTest2 = TileDemo.extend({
     },
     onEnter:function () {
         this._super();
-        director.setProjection(cc.DIRECTOR_PROJECTION_3D);
+        director.setProjection(cc.Director.PROJECTION_3D);
     },
     onExit:function () {
         this._super();
-        director.setProjection(cc.DIRECTOR_PROJECTION_2D);
+        director.setProjection(cc.Director.PROJECTION_2D);
     },
 
     // Automation
@@ -962,7 +970,7 @@ var TMXIsoZorder = TileDemo.extend({
         var back = move.reverse();
         var delay = cc.DelayTime.create(0.5);
         var seq = cc.Sequence.create(move, delay, back);
-        this.tamara.runAction(cc.RepeatForever.create(seq));
+        this.tamara.runAction(seq.repeatForever());
 
         this.schedule(this.repositionSprite);
     },
@@ -1024,7 +1032,7 @@ var TMXOrthoZorder = TileDemo.extend({
         var move = cc.MoveBy.create(5, cc.pMult(cc.p(400, 450), 0.58));
         var back = move.reverse();
         var seq = cc.Sequence.create(move, back);
-        this.tamara.runAction(cc.RepeatForever.create(seq));
+        this.tamara.runAction(seq.repeatForever());
 
         this.schedule(this.repositionSprite);
     },
@@ -1072,9 +1080,8 @@ var TMXOrthoZorder = TileDemo.extend({
 // TMXIsoVertexZ
 //
 //------------------------------------------------------------------
-var TMXIsoVertexZ = TileDemo.extend({
+var TMXIsoVertexZ = TMXFixBugLayer.extend({
     tamara:null,
-    tamara1:null,
     ctor:function () {
         this._super();
         var map = cc.TMXTiledMap.create(s_resprefix + "TileMaps/iso-test-vertexz.tmx");
@@ -1092,7 +1099,7 @@ var TMXIsoVertexZ = TileDemo.extend({
         var back = move.reverse();
         var delay = cc.DelayTime.create(0.5);
         var seq = cc.Sequence.create(move, delay, back);
-        this.tamara.runAction(cc.RepeatForever.create(seq));
+        this.tamara.runAction(seq.repeatForever());
 
         if (!cc.sys.isNative && !("opengl" in cc.sys.capabilities)) {
             var label = cc.LabelTTF.create("Not supported on HTML5-canvas", "Times New Roman", 30);
@@ -1112,14 +1119,11 @@ var TMXIsoVertexZ = TileDemo.extend({
     onEnter:function () {
         this._super();
         // TIP: 2d projection should be used
-        director.setProjection(cc.DIRECTOR_PROJECTION_2D);
-        // do nothing in draw of LayerGradient at this Testcase.
-        this.draw = function () {
-        };
+        director.setProjection(cc.Director.PROJECTION_2D);
     },
     onExit:function () {
         // At exit use any other projection.
-        //	director.setProjection:cc.DIRECTOR_PROJECTION_3D);
+        //	director.setProjection:cc.Director.PROJECTION_3D);
         this._super();
     },
     repositionSprite:function (dt) {
@@ -1149,7 +1153,7 @@ var TMXIsoVertexZ = TileDemo.extend({
 // TMXOrthoVertexZ
 //
 //------------------------------------------------------------------
-var TMXOrthoVertexZ = TileDemo.extend({
+var TMXOrthoVertexZ = TMXFixBugLayer.extend({
     tamara:null,
     ctor:function () {
         this._super();
@@ -1166,7 +1170,7 @@ var TMXOrthoVertexZ = TileDemo.extend({
         var back = move.reverse();
         var delay = cc.DelayTime.create(0.5);
         var seq = cc.Sequence.create(move, delay, back);
-        this.tamara.runAction(cc.RepeatForever.create(seq));
+        this.tamara.runAction(seq.repeatForever());
 
         if (!cc.sys.isNative && !("opengl" in cc.sys.capabilities)) {
             var label = cc.LabelTTF.create("Not supported on HTML5-canvas", "Times New Roman", 30);
@@ -1189,14 +1193,11 @@ var TMXOrthoVertexZ = TileDemo.extend({
         this._super();
 
         // TIP: 2d projection should be used
-        director.setProjection(cc.DIRECTOR_PROJECTION_2D);
-        // do nothing in draw of LayerGradient at this Testcase.
-        this.draw = function () {
-        };
+        director.setProjection(cc.Director.PROJECTION_2D);
     },
     onExit:function () {
         // At exit use any other projection.
-        //	director.setProjection:cc.DIRECTOR_PROJECTION_3D);
+        //	director.setProjection:cc.Director.PROJECTION_3D);
         this._super();
     },
     repositionSprite:function (dt) {

@@ -1,7 +1,7 @@
 /****************************************************************************
- Copyright (c) 2010-2012 cocos2d-x.org
  Copyright (c) 2008-2010 Ricardo Quesada
- Copyright (c) 2011      Zynga Inc.
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -39,6 +39,7 @@ var MenuLayerMainMenu = cc.Layer.extend({
     _touchListener: null,
 
     ctor:function () {
+        //----start0----ctor
         this._super();
 
         // Font Item
@@ -49,7 +50,9 @@ var MenuLayerMainMenu = cc.Layer.extend({
         var item1 = cc.MenuItemSprite.create(spriteNormal, spriteSelected, spriteDisabled, this.onMenuCallback, this);
 
         // Image Item
-        var item2 = cc.MenuItemImage.create(s_sendScore, s_pressSendScore, this.onMenuCallback2, this);
+        var sendScoreSF = cc.SpriteFrame.create(s_sendScore, cc.rect(0, 0, 145, 26));
+        cc.spriteFrameCache.addSpriteFrame(sendScoreSF, "send_score_sf");
+        var item2 = cc.MenuItemImage.create("#send_score_sf", s_pressSendScore, this.onMenuCallback2, this);
 
         // Label Item (LabelAtlas)
         var labelAtlas = cc.LabelAtlas.create("0123456789", s_fpsImages, 16, 24, '.');
@@ -86,7 +89,7 @@ var MenuLayerMainMenu = cc.Layer.extend({
         var color_action = cc.TintBy.create(0.5, 0, -255, -255);
         var color_back = color_action.reverse();
         var seq = cc.Sequence.create(color_action, color_back);
-        item8.runAction(cc.RepeatForever.create(seq));
+        item8.runAction(seq.repeatForever());
 
         var menu = cc.Menu.create( item1, item2, item3, item4, item5, item7, item8, item9);
         menu.alignItemsVertically();
@@ -115,6 +118,7 @@ var MenuLayerMainMenu = cc.Layer.extend({
         this.addChild(menu);
         menu.x = winSize.width/2;
         menu.y = winSize.height/2;
+        //----end0----
     },
 
     onMenuCallback:function (sender) {
@@ -309,14 +313,14 @@ var MenuLayer3 = cc.Layer.extend({
         item3.y = s.height / 2 - 100;
 
         var jump = cc.JumpBy.create(3, cc.p(400, 0), 50, 4);
-        item2.runAction(cc.RepeatForever.create(cc.Sequence.create(jump, jump.reverse())));
+        item2.runAction(cc.Sequence.create(jump, jump.reverse()).repeatForever());
         var spin1 = cc.RotateBy.create(3, 360);
         var spin2 = spin1.clone();
         var spin3 = spin1.clone();
 
-        item1.runAction(cc.RepeatForever.create(spin1));
-        item2.runAction(cc.RepeatForever.create(spin2));
-        item3.runAction(cc.RepeatForever.create(spin3));
+        item1.runAction(spin1.repeatForever());
+        item2.runAction(spin2.repeatForever());
+        item3.runAction(spin3.repeatForever());
 
         this.addChild(menu);
         menu.x = 0;
@@ -328,7 +332,6 @@ var MenuLayer4 = cc.Layer.extend({
     ctor:function () {
         this._super();
         this.init();
-	    cc.log("INITED");
     },
     init:function () {
         //this._super();
@@ -526,3 +529,5 @@ var MenuTestScene = TestScene.extend({
         director.runScene(this);
     }
 });
+
+var arrayOfMenuTest = ["Menu scene test"];

@@ -1,5 +1,6 @@
 /****************************************************************************
- Copyright (c) 2013 cocos2d-x.org
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -27,8 +28,8 @@ var UISliderTest = UIScene.extend({
         if (this._super()) {
             var widgetSize = this._widget.getSize();
             //init text
-            this._topDisplayLabel.setText("Move the slider thumb");
-            this._bottomDisplayLabel.setText("Slider");
+            this._topDisplayLabel.setString("Move the slider thumb");
+            this._bottomDisplayLabel.setString("Slider");
 
             // Create the slider
             var slider = ccui.Slider.create();
@@ -51,7 +52,7 @@ var UISliderTest = UIScene.extend({
             case ccui.Slider.EVENT_PERCENT_CHANGED:
                 var slider = sender;
                 var percent = slider.getPercent();
-                this._topDisplayLabel.setText("Percent " + percent.toFixed(0));
+                this._topDisplayLabel.setString("Percent " + percent.toFixed(0));
                 break;
             default:
                 break;
@@ -64,16 +65,16 @@ var UISliderTest_Scale9 = UIScene.extend({
         if (this._super()) {
             var widgetSize = this._widget.getSize();
             //init text
-            this._topDisplayLabel.setText("Move the slider thumb");
-            this._bottomDisplayLabel.setText("Slider scale9 render");
+            this._topDisplayLabel.setString("Move the slider thumb");
+            this._bottomDisplayLabel.setString("Slider scale9 render");
 
             // Create the slider
             var slider = ccui.Slider.create();
             slider.setTouchEnabled(true);
+            slider.setScale9Enabled(true);
             slider.loadBarTexture("res/cocosui/sliderTrack2.png");
             slider.loadSlidBallTextures("res/cocosui/sliderThumb.png", "res/cocosui/sliderThumb.png", "");
             slider.loadProgressBarTexture("res/cocosui/slider_bar_active_9patch.png");
-            slider.setScale9Enabled(true);
             slider.setCapInsets(cc.rect(0, 0, 0, 0));
             slider.setSize(cc.size(250, 10));
             slider.x = widgetSize.width / 2.0;
@@ -91,7 +92,7 @@ var UISliderTest_Scale9 = UIScene.extend({
             case ccui.Slider.EVENT_PERCENT_CHANGED:
                 var slider = sender;
                 var percent = slider.getPercent();
-                this._topDisplayLabel.setText("Percent " + percent.toFixed(0));
+                this._topDisplayLabel.setString("Percent " + percent.toFixed(0));
                 break;
             default:
                 break;

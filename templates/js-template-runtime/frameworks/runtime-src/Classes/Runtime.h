@@ -31,39 +31,11 @@ using namespace std;
 
 #define _MAX_PATH_ 512
 
-void startRuntime();
+bool initRuntime();
 
-void reloadScript(const string& modulefile);
+bool startRuntime();
 
-// SimulatorConfig
-typedef struct _SimulatorScreenSize {
-	string title;
-	int width;
-	int height;
-
-	_SimulatorScreenSize(const string title_, int width_, int height_)
-	{
-		title  = title_;
-		width  = width_;
-		height = height_;
-	}
-} SimulatorScreenSize;
-
-typedef vector<SimulatorScreenSize> ScreenSizeArray;
-class SimulatorConfig
-{
-public:
-	static SimulatorConfig *getInstance(void);
-
-	// predefined screen size
-	int getScreenSizeCount(void);
-	const SimulatorScreenSize getScreenSize(int index);
-
-private:
-	SimulatorConfig(void);
-	static SimulatorConfig *s_sharedInstance;
-	ScreenSizeArray m_screenSizeArray;
-};
+bool reloadScript(const string& modulefile,bool reloadAll = false);
 
 #endif // _RUNTIME__H_
 

@@ -1,8 +1,7 @@
 /****************************************************************************
-
- http://www.cocos2d-html5.org
- http://www.cocos2d-iphone.org
- http://www.cocos2d-x.org
+ Copyright (c) 2008-2010 Ricardo Quesada
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -85,7 +84,7 @@ var EffecstsBaseLayer = BaseTestLayer.extend({
         var sc = cc.ScaleBy.create(2, 5);
         var sc_back = sc.reverse();
         var seq = cc.Sequence.create( sc, sc_back );
-        var repeat = cc.RepeatForever.create( seq );
+        var repeat = seq.repeatForever();
 
         sister1.runAction( repeat );
         sister2.runAction( repeat.clone() );
@@ -422,8 +421,8 @@ var PageTurn3DTest = EffecstsBaseLayer.extend({
 // Order of tests
 //
 var EffectsTestScene = TestScene.extend({
-    runThisTest:function () {
-        effectsTestSceneIdx = -1;
+    runThisTest:function (num) {
+        effectsTestSceneIdx = (num || num == 0) ? (num - 1) : -1;
         var layer = nextEffectsTest();
         this.addChild(layer);
 
@@ -463,12 +462,20 @@ var nextEffectsTest = function () {
     effectsTestSceneIdx++;
     effectsTestSceneIdx = effectsTestSceneIdx % arrayOfEffectsTest.length;
 
+    if(window.sidebar){
+        effectsTestSceneIdx = window.sidebar.changeTest(effectsTestSceneIdx, 14);
+    }
+
     return new arrayOfEffectsTest[effectsTestSceneIdx]();
 };
 var previousEffectsTest = function () {
     effectsTestSceneIdx--;
     if (effectsTestSceneIdx < 0)
         effectsTestSceneIdx += arrayOfEffectsTest.length;
+
+    if(window.sidebar){
+        effectsTestSceneIdx = window.sidebar.changeTest(effectsTestSceneIdx, 14);
+    }
 
     return new arrayOfEffectsTest[effectsTestSceneIdx]();
 };

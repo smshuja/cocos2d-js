@@ -1,5 +1,6 @@
 /****************************************************************************
- Copyright (c) 2013 cocos2d-x.org
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -95,7 +96,7 @@ UIScene = cc.Layer.extend({
         return false;
     },
     setSceneTitle: function (title) {
-        this._sceneTitle.setText(title);
+        this._sceneTitle.setString(title);
     },
     toExtensionsMainLayer: function (sender, type) {
         if (type == ccui.Widget.TOUCH_ENDED) {

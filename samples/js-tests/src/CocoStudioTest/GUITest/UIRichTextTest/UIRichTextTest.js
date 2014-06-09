@@ -1,5 +1,7 @@
 /****************************************************************************
- Copyright (c) 2013 cocos2d-x.org
+ Copyright (c) 2008-2010 Ricardo Quesada
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -27,8 +29,8 @@ var UIRichTextTest = UISceneEditor.extend({
     init: function () {
         if (this._super()) {
             //init text
-            this._topDisplayLabel.setText("");
-            this._bottomDisplayLabel.setText("RichText");
+            this._topDisplayLabel.setString("");
+            this._bottomDisplayLabel.setString("RichText");
 
             var widgetSize = this._widget.getSize();
             var button = ccui.Button.create();

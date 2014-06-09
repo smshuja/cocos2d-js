@@ -146,6 +146,10 @@ var ChipmunkSprite = function() {
 };
 cc.inherits( ChipmunkSprite, ChipmunkBaseLayer );
 
+ChipmunkSprite.prototype.title = function(){
+    return 'Chipmunk Sprite Test';
+};
+
 //
 // Instance 'base' methods
 // XXX: Should be defined after "cc.inherits"
@@ -242,6 +246,9 @@ var ChipmunkSpriteBatchTest = function() {
 };
 cc.inherits( ChipmunkSpriteBatchTest, ChipmunkSprite );
 
+ChipmunkSpriteBatchTest.prototype.title = function(){
+    return 'Chipmunk SpriteBatch Test';
+};
 
 //------------------------------------------------------------------
 //
@@ -359,6 +366,10 @@ var ChipmunkCollisionTest = function() {
 
 };
 cc.inherits( ChipmunkCollisionTest, ChipmunkBaseLayer );
+
+ChipmunkCollisionTest.prototype.title = function(){
+    return 'Chipmunk Collision test';
+};
 
 
 //------------------------------------------------------------------
@@ -541,6 +552,10 @@ var ChipmunkCollisionMemoryLeakTest = function() {
 };
 cc.inherits( ChipmunkCollisionMemoryLeakTest, ChipmunkBaseLayer );
 
+ChipmunkCollisionMemoryLeakTest.prototype.title = function(){
+    return 'Chipmunk Memory Leak Test';
+};
+
 //------------------------------------------------------------------
 //
 // Test Anchor Point with PhysicsSprite
@@ -577,7 +592,7 @@ var ChipmunkSpriteAnchorPoint = function() {
 		var scaledown = cc.ScaleBy.create(0.5, 0.5);
 		var scaleup = scaledown.reverse();
 		var seq = cc.Sequence.create( scaledown, scaleup);
-		var repeat = cc.RepeatForever.create( seq );
+		var repeat = seq.repeatForever();
 
 		sprite1.runAction( repeat );
 		sprite2.runAction( repeat.clone() );
@@ -592,6 +607,10 @@ var ChipmunkSpriteAnchorPoint = function() {
 
 };
 cc.inherits( ChipmunkSpriteAnchorPoint, ChipmunkBaseLayer );
+
+ChipmunkSpriteAnchorPoint.prototype.title = function(){
+    return 'AnchorPoint in PhysicsSprite';
+};
 
 ChipmunkSpriteAnchorPoint.prototype.createPhysicsSprite = function(pos) {
 
@@ -785,7 +804,9 @@ var PyramidStack = function() {
 	shape.setFriction(0.9);
 };
 cc.inherits( PyramidStack, ChipmunkDemo );
-
+PyramidStack.prototype.title = function(){
+    return 'Pyramid Stack';
+};
 
 //------------------------------------------------------------------
 //
@@ -855,6 +876,10 @@ PyramidTopple.prototype.update = function(dt)
 	for (var i = 0; i < 3; i++){
 		this.space.step(dt);
 	}
+};
+
+PyramidTopple.prototype.title = function(){
+    return 'Pyramid Topple';
 };
 
 //------------------------------------------------------------------
@@ -1097,6 +1122,9 @@ var Joints = function() {
 
 cc.inherits( Joints, ChipmunkDemo );
 
+Joints.prototype.title = function(){
+    return 'Joints';
+};
 
 //------------------------------------------------------------------
 //
@@ -1158,6 +1186,10 @@ var Balls = function() {
 	ramp.setLayers(NOT_GRABABLE_MASK);
 };
 cc.inherits( Balls, ChipmunkDemo );
+
+Balls.prototype.title = function(){
+ return 'Balls';
+};
 
 
 //------------------------------------------------------------------
@@ -1264,6 +1296,7 @@ var Buoyancy = function() {
 
 	space.addCollisionHandler( 1, 0, null, this.waterPreSolve, null, null);
 };
+
 cc.inherits( Buoyancy, ChipmunkDemo );
 
 Buoyancy.prototype.update = function(dt)
@@ -1273,6 +1306,10 @@ Buoyancy.prototype.update = function(dt)
 	for (var i = 0; i < 3; i++){
 		this.space.step(dt);
 	}
+};
+
+Buoyancy.prototype.title = function(){
+ return 'Buoyancy';
 };
 
 Buoyancy.prototype.waterPreSolve = function(arb, space, ptr) {
@@ -1448,6 +1485,10 @@ Planet.prototype.add_box = function()
 	shape.setFriction(0.7);
 };
 
+Planet.prototype.title = function(){
+ return 'Planet';
+};
+
 
 //
 // Entry point
@@ -1459,8 +1500,8 @@ var ChipmunkTestScene = function() {
 };
 cc.inherits(ChipmunkTestScene, TestScene );
 
-ChipmunkTestScene.prototype.runThisTest = function () {
-    chipmunkTestSceneIdx = -1;
+ChipmunkTestScene.prototype.runThisTest = function (num) {
+    chipmunkTestSceneIdx = (num || num == 0) ? (num - 1) : -1;
     var layer = nextChipmunkTest();
     this.addChild(layer);
     director.runScene(this);
@@ -1498,12 +1539,20 @@ var nextChipmunkTest = function () {
     chipmunkTestSceneIdx++;
     chipmunkTestSceneIdx = chipmunkTestSceneIdx % arrayOfChipmunkTest.length;
 
+    if(window.sidebar){
+        chipmunkTestSceneIdx = window.sidebar.changeTest(chipmunkTestSceneIdx, 3);
+    }
+
     return new arrayOfChipmunkTest[chipmunkTestSceneIdx]();
 };
 var previousChipmunkTest = function () {
     chipmunkTestSceneIdx--;
     if (chipmunkTestSceneIdx < 0)
         chipmunkTestSceneIdx += arrayOfChipmunkTest.length;
+
+    if(window.sidebar){
+        chipmunkTestSceneIdx = window.sidebar.changeTest(chipmunkTestSceneIdx, 3);
+    }
 
     return new arrayOfChipmunkTest[chipmunkTestSceneIdx]();
 };

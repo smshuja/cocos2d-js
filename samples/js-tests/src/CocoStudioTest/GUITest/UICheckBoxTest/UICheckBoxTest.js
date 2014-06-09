@@ -1,5 +1,7 @@
 /****************************************************************************
- Copyright (c) 2013 cocos2d-x.org
+ Copyright (c) 2008-2010 Ricardo Quesada
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -39,10 +41,10 @@ var UICheckBoxEditorTest = UIBaseLayer.extend({
     selectedStateEvent: function (sender, type) {
         switch (type) {
             case ccui.CheckBox.EVENT_SELECTED:
-                this._topDisplayText.setText("Selected");
+                this._topDisplayText.setString("Selected");
                 break;
             case ccui.CheckBox.EVENT_UNSELECTED:
-                this._topDisplayText.setText("Unselected");
+                this._topDisplayText.setString("Unselected");
                 break;
 
             default:

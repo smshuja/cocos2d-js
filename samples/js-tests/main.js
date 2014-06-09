@@ -27,7 +27,12 @@
 
 cc.game.onStart = function(){
     cc.LoaderScene.preload(g_resources, function () {
-	    cc.director.runScene(new TestController());
+
+        if(window.sidebar && typeof sidebar.start === 'function'){
+            sidebar.start();
+        }else{
+            cc.director.runScene(new TestController());
+        }
     }, this);
 };
 cc.game.run();
