@@ -1,7 +1,7 @@
 /****************************************************************************
- Copyright (c) 2010-2012 cocos2d-x.org
  Copyright (c) 2008-2010 Ricardo Quesada
- Copyright (c) 2011      Zynga Inc.
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -37,7 +37,7 @@ var EditBoxTestLayer = cc.Layer.extend({
 
     init: function () {
         this._box1 = cc.EditBox.create(cc.size(170, 50), cc.Scale9Sprite.create("res/extensions/green_edit.png"), cc.Scale9Sprite.create("res/extensions/orange_edit.png"));
-        this._box1.setText("EditBoxs");
+        this._box1.setString("EditBoxs");
         this._box1.x = 220;
         this._box1.y = 50;
         this._box1.setFontColor(cc.color(251, 250, 0));
@@ -45,7 +45,7 @@ var EditBoxTestLayer = cc.Layer.extend({
         this.addChild(this._box1);
 
         this._box2 = cc.EditBox.create(cc.size(130, 40), cc.Scale9Sprite.create("res/extensions/green_edit.png"));
-        this._box2.setText("EditBox Sample");
+        this._box2.setString("EditBox Sample");
         this._box2.x = 220;
         this._box2.y = 190;
         this._box2.setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD);
@@ -54,7 +54,7 @@ var EditBoxTestLayer = cc.Layer.extend({
         this.addChild(this._box2);
 
         this._box3 = cc.EditBox.create(cc.size(65, 40), cc.Scale9Sprite.create("res/extensions/orange_edit.png"));
-        this._box3.setText("Image");
+        this._box3.setString("Image");
         this._box3.x = 220;
         this._box3.y = 250;
         this._box3.setFontColor(cc.color(15, 250, 245));

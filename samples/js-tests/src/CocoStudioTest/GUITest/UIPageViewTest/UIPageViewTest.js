@@ -1,5 +1,7 @@
 /****************************************************************************
- Copyright (c) 2013 cocos2d-x.org
+ Copyright (c) 2008-2010 Ricardo Quesada
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -39,7 +41,7 @@ var UIPageViewEditorTest = UIBaseLayer.extend({
         switch (type) {
             case ccui.PageView.EVENT_TURNING:
                 var pageView = sender;
-                this._topDisplayText.setText("page = " + (pageView.getCurPageIndex() + 1));
+                this._topDisplayText.setString("page = " + (pageView.getCurPageIndex() + 1));
                 break;
             default:
                 break;

@@ -1,7 +1,7 @@
 /****************************************************************************
- Copyright (c) 2010-2012 cocos2d-x.org
  Copyright (c) 2008-2010 Ricardo Quesada
- Copyright (c) 2011      Zynga Inc.
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -281,10 +281,9 @@ var TextFieldTTFActionTest = KeyboardNotificationLayer.extend({
         this._super();
 
         this._charLimit = 20;
-        this._textFieldAction = cc.RepeatForever.create(
-            cc.Sequence.create(
+        this._textFieldAction = cc.Sequence.create(
                 cc.FadeOut.create(0.25),
-                cc.FadeIn.create(0.25)));
+                cc.FadeIn.create(0.25)).repeatForever();
         this._action = false;
 
         // add CCTextFieldTTF

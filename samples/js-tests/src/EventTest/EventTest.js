@@ -1,8 +1,7 @@
 /****************************************************************************
- Copyright (c) 2010-2012 cocos2d-x.org
  Copyright (c) 2008-2010 Ricardo Quesada
- Copyright (c) 2011      Zynga Inc.
-
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -425,8 +424,8 @@ var KeyboardTest = EventTest.extend({
 
 
 var EventTestScene = TestScene.extend({
-    runThisTest:function () {
-        sceneIdx = -1;
+    runThisTest:function (num) {
+        sceneIdx = (num || num == 0) ? (num - 1) : -1;
         var layer = nextEventsTest();
         // var menu = new EventTest();
         // menu.addKeyboardNotificationLayer( layer );
@@ -451,12 +450,20 @@ var nextEventsTest = function () {
     sceneIdx++;
     sceneIdx = sceneIdx % arrayOfEventsTest.length;
 
+    if(window.sidebar){
+        sceneIdx = window.sidebar.changeTest(sceneIdx, 12);
+    }
+
     return new arrayOfEventsTest[sceneIdx]();
 };
 var previousEventsTest = function () {
     sceneIdx--;
     if (sceneIdx < 0)
         sceneIdx += arrayOfEventsTest.length;
+
+    if(window.sidebar){
+        sceneIdx = window.sidebar.changeTest(sceneIdx, 12);
+    }
 
     return new arrayOfEventsTest[sceneIdx]();
 };

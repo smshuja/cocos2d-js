@@ -1,5 +1,6 @@
 /****************************************************************************
- Copyright (c) 2013 cocos2d-x.org
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -31,8 +32,8 @@ var UILayoutTestBase = UIScene.extend({
         if (this._super()) {
             var widgetSize = this._widget.getSize();
             //init text
-            this._topDisplayLabel.setText("");
-            this._bottomDisplayLabel.setText(this.getText());
+            this._topDisplayLabel.setString("");
+            this._bottomDisplayLabel.setString(this.getText());
             this._bottomDisplayLabel.x = widgetSize.width / 2;
             this._bottomDisplayLabel.y = widgetSize.height / 2 - this._bottomDisplayLabel.height * 3;
 
@@ -63,10 +64,10 @@ var UILayoutTestBase = UIScene.extend({
 
             this.button_scale9 = ccui.Button.create();
             this.button_scale9.setTouchEnabled(true);
-            this.button_scale9.loadTextures("res/cocosui/button.png", "res/cocosui/buttonHighlighted.png", "");
             this.button_scale9.setScale9Enabled(true);
+            this.button_scale9.loadTextures("res/cocosui/button.png", "res/cocosui/buttonHighlighted.png", "");
             this.button_scale9.width = 100;
-	        this.button_scale9.height = this.button_scale9.height;
+	        this.button_scale9.height = 32;
             this.button_scale9.x = layoutRect.width - this.button_scale9.width / 2;
             this.button_scale9.y = this.button_scale9.height / 2;
             this.layout.addChild(this.button_scale9);

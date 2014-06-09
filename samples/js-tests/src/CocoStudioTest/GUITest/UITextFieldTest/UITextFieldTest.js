@@ -1,5 +1,7 @@
 /****************************************************************************
- Copyright (c) 2013 cocos2d-x.org
+ Copyright (c) 2008-2010 Ricardo Quesada
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -43,16 +45,16 @@ var UITextFieldEditorTest = UIBaseLayer.extend({
     textFieldEvent: function (sender, type) {
         switch (type) {
             case ccui.TextField. EVENT_ATTACH_WITH_ME:
-                this._topDisplayText.setText("attach with IME");
+                this._topDisplayText.setString("attach with IME");
                 break;
             case ccui.TextField. EVENT_DETACH_WITH_ME:
-                this._topDisplayText.setText("detach with IME");
+                this._topDisplayText.setString("detach with IME");
                 break;
             case ccui.TextField. EVENT_INSERT_TEXT:
-                this._topDisplayText.setText("insert words");
+                this._topDisplayText.setString("insert words");
                 break;
             case ccui.TextField. EVENT_DELETE_BACKWARD:
-                this._topDisplayText.setText("delete word");
+                this._topDisplayText.setString("delete word");
                 break;
             default:
                 break;

@@ -1,5 +1,6 @@
 /****************************************************************************
- Copyright (c) 2013 cocos2d-x.org
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -26,8 +27,8 @@ var UIImageViewTest = UIScene.extend({
     init: function () {
         if (this._super()) {
             //init text
-            this._topDisplayLabel.setText("");
-            this._bottomDisplayLabel.setText("ImageView");
+            this._topDisplayLabel.setString("");
+            this._bottomDisplayLabel.setString("ImageView");
 
             var widgetSize = this._widget.getSize();
             // Create the imageview
@@ -48,8 +49,8 @@ var UIImageViewTest_Scale9 = UIScene.extend({
         if (this._super()) {
             var widgetSize = this._widget.getSize();
             //init text
-            this._topDisplayLabel.setText("");
-            this._bottomDisplayLabel.setText("ImageView scale9 render");
+            this._topDisplayLabel.setString("");
+            this._bottomDisplayLabel.setString("ImageView scale9 render");
 
             // Create the imageview
             var imageView = ccui.ImageView.create();

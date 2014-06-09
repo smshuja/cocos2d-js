@@ -1,5 +1,7 @@
 /****************************************************************************
- Copyright (c) 2013 cocos2d-x.org
+ Copyright (c) 2008-2010 Ricardo Quesada
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -227,7 +229,7 @@ var UIComponentTest = SceneEditorTestLayer.extend({
     },
     touchEvent: function (sender, type) {
         switch (type) {
-            case ccs.TOUCH_EVENT_TYPE_BAGAN:
+            case ccui.Widget.TOUCH_BEGAN:
                 var blowFish = this._node.getChildByTag(10010).getComponent("CCArmature").getNode();
                 blowFish.runAction(cc.MoveBy.create(10, cc.p(-1000, 0)));
 

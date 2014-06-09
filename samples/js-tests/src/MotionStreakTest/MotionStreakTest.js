@@ -1,6 +1,7 @@
 /****************************************************************************
- Copyright (c) 2010-2013 cocos2d-x.org
  Copyright (c) 2008-2010 Ricardo Quesada
+ Copyright (c) 2011-2012 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
  Copyright (c) 2008-2009 Jason Booth
 
  http://www.cocos2d-x.org
@@ -137,19 +138,19 @@ var MotionStreakTest1 = MotionStreakTest.extend({
 
         var a1 = cc.RotateBy.create(2, 360);
 
-        var action1 = cc.RepeatForever.create(a1);
+        var action1 = a1.repeatForever();
         var motion = cc.MoveBy.create(2, cc.p(100, 0));
-        this._root.runAction(cc.RepeatForever.create(cc.Sequence.create(motion, motion.reverse())));
+        this._root.runAction(cc.Sequence.create(motion, motion.reverse()).repeatForever());
         this._root.runAction(action1);
 
-        var colorAction = cc.RepeatForever.create(cc.Sequence.create(
+        var colorAction = cc.Sequence.create(
             cc.TintTo.create(0.2, 255, 0, 0),
             cc.TintTo.create(0.2, 0, 255, 0),
             cc.TintTo.create(0.2, 0, 0, 255),
             cc.TintTo.create(0.2, 0, 255, 255),
             cc.TintTo.create(0.2, 255, 255, 0),
             cc.TintTo.create(0.2, 255, 0, 255),
-            cc.TintTo.create(0.2, 255, 255, 255)));
+            cc.TintTo.create(0.2, 255, 255, 255)).repeatForever();
 
         this._streak.runAction(colorAction);
     },
